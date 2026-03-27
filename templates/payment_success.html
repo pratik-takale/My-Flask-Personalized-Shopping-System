@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg p-4 text-center">
+
+        <!-- Success Icon -->
+        <div style="font-size:60px;" class="text-success">
+            ✔
+        </div>
+
+        <h2 class="text-success mt-3">Payment Successful!</h2>
+        <p class="text-muted">
+            Thank you for your purchase. Your order has been confirmed.
+        </p>
+
+        <hr>
+
+        <!-- Order Details -->
+        <div class="row text-left mt-4">
+
+            <div class="col-md-6">
+                <p><strong>Invoice No:</strong> {{ order.invoice_number }}</p>
+                <p><strong>Order ID:</strong> {{ order.id }}</p>
+                <p><strong>Status:</strong>
+                    <span class="badge bg-success">
+                        {{ order.status }}
+                    </span>
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+                <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+                <p><strong>Tracking ID:</strong>
+                    {{ order.tracking_id or "Will be assigned soon" }}
+                </p>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- Buttons -->
+        <div class="mt-4">
+            <a href="{{ url_for('products') }}" class="btn btn-primary">
+                Continue Shopping
+            </a>
+
+            <a href="{{ url_for('generate_invoice', order_id=order.id) }}" 
+               class="btn btn-dark">
+                Download Invoice
+            </a>
+
+            <a href="{{ url_for('user_order') }}" 
+               class="btn btn-outline-secondary">
+                View My Orders
+            </a>
+        </div>
+
+    </div>
+
+</div>
+{% if email_products %}
+<hr>
+
+<h3 class="text-center mt-4">⭐ You May Also Like</h3>
+
+<div class="row mt-3">
+
+{% for product in email_products %}
+<div class="col-md-2 col-6">
+
+<div class="card">
+
+<img src="{{ url_for(
+'static',
+filename='images/products/' +
+product.image_url.split(',')[0]) }}"
+class="card-img-top">
+
+<div class="card-body text-center">
+
+<p>{{ product.name[:30] }}</p>
+
+<a href="{{ url_for('product_details', id=product.id) }}"
+class="btn btn-sm btn-dark">
+View
+</a>
+
+</div>
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>All Orders</h2>
+
+<table class="table table-bordered bg-white shadow-sm">
+
+<tr>
+<th>Invoice</th>
+<th>User ID</th>
+<th>Total</th>
+<th>Payment</th>
+<th>Status</th>
+<th>Tracking ID</th>
+<th>Change Status</th>
+</tr>
+
+{% for order in orders %}
+<tr>
+
+<td>{{ order.invoice_number }}</td>
+<td>{{ order.user_id }}</td>
+<td>₹{{ order.total_amount }}</td>
+<td>{{ order.payment_method }}</td>
+
+<!-- STATUS BADGE -->
+<td>
+{% if order.status == "Pending" %}
+<span class="badge bg-warning text-dark">Pending</span>
+
+{% elif order.status == "Shipped" %}
+<span class="badge bg-info text-dark">Shipped</span>
+
+{% elif order.status == "Delivered" %}
+<span class="badge bg-success">Delivered</span>
+
+{% elif order.status == "Cancelled" %}
+<span class="badge bg-danger">Cancelled</span>
+
+{% endif %}
+</td>
+
+<!-- TRACKING ID -->
+<td>
+{{ order.tracking_id or "Not Assigned" }}
+</td>
+
+<!-- UPDATE FORM -->
+<td>
+
+<form method="POST"
+action="{{ url_for('update_order_status', order_id=order.id) }}">
+
+<!-- CSRF TOKEN FIX -->
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<select name="status" class="form-select mb-2">
+
+<option value="Pending"
+{% if order.status=="Pending" %}selected{% endif %}>
+Pending
+</option>
+
+<option value="Shipped"
+{% if order.status=="Shipped" %}selected{% endif %}>
+Shipped
+</option>
+
+<option value="Delivered"
+{% if order.status=="Delivered" %}selected{% endif %}>
+Delivered
+</option>
+
+<option value="Cancelled"
+{% if order.status=="Cancelled" %}selected{% endif %}>
+Cancelled
+</option>
+
+</select>
+
+<button class="btn btn-sm btn-primary">
+Update
+</button>
+
+</form>
+
+</td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

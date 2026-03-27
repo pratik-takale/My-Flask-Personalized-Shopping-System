@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ================= HERO BANNER ================= -->
+<section class="hero-wrapper">
+    <img src="{{ url_for('static', filename='images/banner.jpg') }}"
+         class="hero-img">
+</section>
+
+
+<!-- ================= TOP DEALS ================= -->
+<section class="top-deals container-main">
+<h2 class="section-title">Biggest Deals On Top Brands</h2>
+
+<div class="deal-grid">
+
+<a href="{{ url_for('filter_by_category', category='Men') }}" class="deal-card">
+<img src="{{ url_for('static', filename='images/deals/men.jpg') }}">
+<div class="deal-overlay">MEN COLLECTION</div>
+</a>
+
+<a href="{{ url_for('filter_by_category', category='Women') }}" class="deal-card">
+<img src="{{ url_for('static', filename='images/deals/women.jpg') }}">
+<div class="deal-overlay">WOMEN STYLE</div>
+</a>
+
+<a href="{{ url_for('filter_by_category', category='Footwear') }}" class="deal-card">
+<img src="{{ url_for('static', filename='images/deals/shoes.jpg') }}">
+<div class="deal-overlay">FOOTWEAR</div>
+</a>
+
+<a href="{{ url_for('filter_by_category', category='Accessories') }}" class="deal-card">
+<img src="{{ url_for('static', filename='images/deals/accessories.jpg') }}">
+<div class="deal-overlay">ACCESSORIES</div>
+</a>
+
+</div>
+</section>
+
+
+<!-- ================= RECOMMENDED ================= -->
+{% if recommended_products %}
+<section class="container-main section-space">
+
+<h2 class="section-title"> Recommended For You</h2>
+
+<div class="product-scroll">
+
+{% for product in recommended_products %}
+<div class="product-card">
+
+<div class="img-wrapper"
+onmousemove="handleSlide(event,this)">
+
+<div class="img-slider">
+
+{% for img in product.image_url.split(',') %}
+<img class="slider-img"
+src="{{ url_for('static',
+filename='images/products/' + img.strip()) }}">
+{% endfor %}
+
+</div>
+
+</div>
+
+<div class="product-info">
+<p class="brand">{{ product.brand }}</p>
+<p class="product-name">{{ product.name[:40] }}</p>
+
+<a href="/product/{{ product.id }}"
+class="btn-add">View</a>
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+</section>
+{% endif %}
+
+
+<!-- ================= STYLE PICKS ================= -->
+{% if taste_products %}
+<section class="container-main section-space">
+
+<h2 class="section-title"> Your Style Picks</h2>
+
+<div class="product-scroll">
+
+{% for product in taste_products %}
+<div class="product-card">
+
+<div class="img-wrapper"
+onmousemove="handleSlide(event,this)">
+<div class="img-slider">
+
+{% for img in product.image_url.split(',') %}
+<img class="slider-img"
+src="{{ url_for('static',
+filename='images/products/' + img.strip()) }}">
+{% endfor %}
+
+</div>
+</div>
+
+<div class="product-info">
+<p class="brand"))
+.brand">{{ product.brand }}</p>
+<p class="product-name">{{ product.name[:40] }}</p>
+
+<a href="/product/{{ product.id }}"
+class="btn-add">View</a>
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+</section>
+{% endif %}
+
+
+<!-- ================= TRENDING ================= -->
+{% if trending_products %}
+<section class="container-main section-space">
+
+<h2 class="section-title"> Trending Now</h2>
+
+<div class="product-scroll">
+
+{% for product in trending_products %}
+<div class="product-card">
+
+<div class="img-wrapper"
+onmousemove="handleSlide(event,this)">
+<div class="img-slider">
+
+{% for img in product.image_url.split(',') %}
+<img class="slider-img"
+src="{{ url_for('static',
+filename='images/products/' + img.strip()) }}">
+{% endfor %}
+
+</div>
+</div>
+
+<div class="product-info">
+<p class="brand">{{ product.brand }}</p>
+<p class="product-name">{{ product.name[:40] }}</p>
+
+<a href="/product/{{ product.id }}"
+class="btn-add">View</a>
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+</section>
+{% endif %}
+
+
+<!-- ================= RECENTLY VIEWED ================= -->
+{% if recently_viewed %}
+<section class="container-main section-space">
+
+<h2 class="section-title"> Recently Viewed</h2>
+
+<div class="product-scroll">
+
+{% for product in recently_viewed %}
+<div class="product-card">
+
+<div class="img-wrapper">
+
+<img class="slider-img"
+src="{{ url_for('static',
+filename='images/products/' +
+product.image_url.split(',')[0]) }}">
+
+</div>
+
+<div class="product-info">
+<p class="brand">{{ product.brand }}</p>
+<p class="product-name">{{ product.name[:40] }}</p>
+
+<a href="/product/{{ product.id }}"
+class="btn-add">View</a>
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+</section>
+{% endif %}
+
+{% endblock %}

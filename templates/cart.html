@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-main">
+
+<h3 class="mb-4">🛒 Your Shopping Bag</h3>
+
+{% if cart_items %}
+
+<div class="row">
+
+  <!-- LEFT: ITEMS -->
+  <div class="col-md-8">
+
+    {% for item, product in cart_items %}
+    <div class="card mb-3 shadow-sm">
+      <div class="row no-gutters align-items-center p-3">
+
+        <!-- IMAGE -->
+        <div class="col-md-3 text-center">
+          {% if product.image_url %}
+            {% set first_image = product.image_url.split(',')[0] %}
+            <img src="{{ url_for('static', filename='images/products/' + first_image.strip()) }}"
+                 class="img-fluid rounded"
+                 style="max-height:120px;">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/no-image.png') }}"
+                 class="img-fluid rounded">
+          {% endif %}
+        </div>
+
+        <!-- PRODUCT DETAILS -->
+        <div class="col-md-5">
+          <h6>{{ product.brand }}</h6>
+          <p class="mb-1">{{ product.name }}</p>
+
+          <!-- Quantity Controls -->
+          <div class="d-flex align-items-center mt-2">
+            <a href="{{ url_for('update_cart', pid=product.id, action='decrease') }}"
+               class="btn btn-sm btn-outline-secondary">−</a>
+
+            <span class="mx-3">{{ item.quantity }}</span>
+
+            <a href="{{ url_for('update_cart', pid=product.id, action='increase') }}"
+               class="btn btn-sm btn-outline-secondary">+</a>
+          </div>
+
+          <strong class="mt-2 d-block">₹{{ product.price }}</strong>
+        </div>
+
+        <!-- SUBTOTAL & REMOVE -->
+        <div class="col-md-4 text-right">
+          <h5>₹{{ product.price * item.quantity }}</h5>
+          <a href="{{ url_for('remove_from_cart', pid=product.id) }}"
+             class="text-danger small">Remove</a>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+
+  <!-- RIGHT: SUMMARY -->
+  <div class="col-md-4">
+    <div class="card p-4 shadow-sm sticky-top" style="top:80px;">
+
+      <h5>Price Details</h5>
+      <hr>
+
+      <p>Subtotal</p>
+      <h6>₹{{ total }}</h6>
+
+      <hr>
+
+      <!-- DELIVERY INFO -->
+      <p><strong>Delivery</strong></p>
+      <p class="text-success mb-1">Free Delivery 🚚</p>
+      <small>Estimated: 3-5 Business Days</small>
+
+      <hr>
+
+      <h5>Total Amount</h5>
+      <h4 class="text-danger">₹{{ total }}</h4>
+
+      <a href="{{ url_for('checkout') }}"
+         class="btn btn-danger btn-block mt-3">
+        Proceed to Checkout
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= RECOMMENDED SECTION ================= -->
+
+{% if recommended %}
+<hr class="mt-5">
+<h4 class="mb-4">✨ Recommended For You</h4>
+
+<div class="row">
+  {% for p in recommended %}
+  <div class="col-md-3">
+    <div class="card shadow-sm mb-4">
+
+      {% if p.image_url %}
+        {% set first_image = p.image_url.split(',')[0] %}
+        <img src="{{ url_for('static', filename='images/products/' + first_image.strip()) }}"
+             class="card-img-top"
+             style="height:200px; object-fit:cover;">
+      {% endif %}
+
+      <div class="card-body text-center">
+        <h6>{{ p.brand }}</h6>
+        <p class="small">{{ p.name }}</p>
+        <strong>₹{{ p.price }}</strong>
+
+        <a href="{{ url_for('add_to_cart', pid=p.id) }}"
+           class="btn btn-sm btn-danger btn-block mt-2">
+          Add to Bag
+        </a>
+      </div>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% else %}
+  <div class="text-center mt-5">
+    <h4>Your cart is empty 🛒</h4>
+    <a href="/" class="btn btn-primary mt-3">Continue Shopping</a>
+  </div>
+{% endif %}
+
+</div>
+
+{% endblock %}

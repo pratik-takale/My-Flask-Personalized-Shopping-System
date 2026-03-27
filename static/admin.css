@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f6f9;
+}
+
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.admin-sidebar {
+  width: 230px;
+  background: #111827;
+  color: white;
+  padding: 20px;
+}
+
+.admin-sidebar .logo {
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.admin-sidebar a {
+  display: block;
+  color: #cbd5e1;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.admin-sidebar a:hover {
+  background: #1f2937;
+  color: white;
+}
+
+.logout {
+  margin-top: 30px;
+  background: #ef4444;
+  color: white !important;
+}
+
+/* MAIN */
+.admin-content {
+  flex: 1;
+  padding: 30px;
+}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="signup-wrapper">
+
+    <!-- LEFT SIDE CONTENT -->
+    <div class="signup-left">
+        <h1>Discover <span>Smart Product</span><br> Recommendations Just For You?</h1>
+
+        <p>
+        Explore personalized product suggestions powered by intelligent recommendation algorithms.
+        Find the perfect style, brand and deals tailored to your preferences.
+
+        </p>
+
+        <a href="#" class="more-btn">More Info</a>
+    </div>
+
+    <!-- RIGHT SIDE FORM -->
+    <div class="signup-right">
+
+        <div class="signup-card">
+            <h3>SIGN UP</h3>
+
+            <form method="POST">
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm" placeholder="Confirm Password" required>
+
+                <button type="submit">SIGN UP</button>
+
+            </form>
+
+            <p class="login-link">
+                Already a user? <a href="/login">LOGIN</a>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

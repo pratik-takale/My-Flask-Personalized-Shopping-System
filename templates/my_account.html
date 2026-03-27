@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="account-container">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="account-sidebar">
+        <h4>Hello, {{ user.name }}</h4>
+
+        <a href="{{ url_for('my_account') }}" class="active-link">
+            <i class="fa-regular fa-user"></i> Account Overview
+        </a>
+
+        <a href="{{ url_for('user_order') }}">
+            <i class="fa-solid fa-box"></i> My Orders
+        </a>
+
+        <a href="/wishlist">
+            <i class="fa-regular fa-heart"></i> Wishlist
+        </a>
+
+        <a href="/cart">
+            <i class="fa-solid fa-bag-shopping"></i> Bag
+        </a>
+
+        <a href="/logout" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </a>
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="account-content">
+
+        <h2>Account Overview</h2>
+
+        <!-- PROFILE CARD -->
+        <div class="profile-card">
+            <div class="profile-info">
+                <h3>{{ user.name }}</h3>
+                <p>{{ user.email }}</p>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="account-stats">
+
+            <div class="stat-box">
+                <h4>Total Orders</h4>
+                <p>{{ total_orders }}</p>
+            </div>
+
+            <div class="stat-box">
+                <h4>Total Spent</h4>
+                <p>₹{{ total_spent }}</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Recommended For You</h3>
+
+<div class="row">
+  {% for p in products %}
+  <div class="col-md-3">
+    <div class="card mb-3">
+
+      <img src="{{ p.image_url or url_for('static', filename='images/no-image.png') }}"
+           class="card-img-top"
+           height="180"
+           style="object-fit:contain;">
+
+      <div class="card-body text-center">
+        <h6>{{ p.name }}</h6>
+        <p>₹{{ p.price }}</p>
+
+        <!-- ✅ FIX -->
+        <a href="{{ url_for('add_to_cart', pid=p.id) }}"
+           class="btn btn-sm btn-success">
+           Add
+        </a>
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

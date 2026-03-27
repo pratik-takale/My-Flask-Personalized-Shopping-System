@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container" style="max-width:400px;">
+  <h3>Admin Login</h3>
+
+  <form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="text" name="username" class="form-control mb-2" placeholder="Username" required>
+    <input type="password" name="password" class="form-control mb-2" placeholder="Password" required>
+    <button class="btn btn-dark w-100">Login</button>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4 class="mb-3">Search results for: <b>{{ query }}</b></h4>
+
+{% if products and products|length > 0 %}
+  <div class="row">
+    {% for p in products %}
+      <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+          <img src="{{ p.image_url }}"
+               class="card-img-top"
+               style="height:200px; object-fit:contain; padding:10px;"
+               onerror="this.src='https://via.placeholder.com/300x200?text=No+Image';">
+          <div class="card-body">
+            <h6 class="mb-1">{{ p.name }}</h6>
+            <small class="text-muted">{{ p.brand }}</small>
+
+            <div class="mt-2">
+              ⭐ {{ p.rating }} ({{ p.review_count }})
+            </div>
+
+            <div class="mt-2 d-flex">
+              <a href="/product/{{ p.id }}" class="btn btn-sm btn-info mr-2">View</a>
+              <a href="/add_to_cart/{{ p.id }}" class="btn btn-sm btn-success">Add</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No products found.</p>
+{% endif %}
+
+{% endblock %}

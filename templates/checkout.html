@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-main mt-4">
+
+<h3 class="mb-4">🧾 Checkout</h3>
+
+{% if cart_items %}
+
+<div class="row">
+
+<!-- ================= LEFT SIDE ================= -->
+<div class="col-md-8">
+
+<!-- ORDER ITEMS -->
+<div class="card shadow-sm mb-4 p-3">
+
+<h5 class="mb-3">Order Items</h5>
+
+{% for item, product in cart_items %}
+<div class="row align-items-center mb-3 border-bottom pb-3">
+
+<div class="col-md-2">
+
+{% if product.image_url %}
+{% set first_image = product.image_url.split(',')[0] %}
+
+<img src="{{ url_for('static', filename='images/products/' + first_image.strip()) }}"
+class="img-fluid rounded"
+style="height:80px; object-fit:cover;">
+
+{% endif %}
+
+</div>
+
+<div class="col-md-6">
+<h6>{{ product.name }}</h6>
+<small>Qty: {{ item.quantity }}</small>
+</div>
+
+<div class="col-md-4 text-right">
+<strong>₹{{ product.price * item.quantity }}</strong>
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+
+
+<!-- ADDRESS SECTION -->
+<div class="card shadow-sm p-4">
+
+<h5 class="mb-3">📍 Delivery Address</h5>
+
+<form method="POST" action="{{ url_for('save_checkout_address') }}">
+
+<!-- CSRF TOKEN -->
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<div class="form-row">
+
+<div class="form-group col-md-6">
+<input type="text"
+name="name"
+class="form-control"
+placeholder="Full Name"
+required>
+</div>
+
+<div class="form-group col-md-6">
+<input type="text"
+name="phone"
+class="form-control"
+placeholder="Phone Number"
+required>
+</div>
+
+</div>
+
+
+<div class="form-group">
+<textarea name="address"
+class="form-control"
+placeholder="Full Address"
+rows="3"
+required></textarea>
+</div>
+
+
+<div class="form-row">
+
+<div class="form-group col-md-6">
+<input type="text"
+name="city"
+class="form-control"
+placeholder="City"
+required>
+</div>
+
+<div class="form-group col-md-6">
+<input type="text"
+name="pincode"
+class="form-control"
+placeholder="Pincode"
+required>
+</div>
+
+</div>
+
+
+<button type="submit"
+class="btn btn-primary btn-block mt-3">
+
+Save Address & Continue
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- ================= RIGHT SIDE ================= -->
+<div class="col-md-4">
+
+<div class="card shadow-sm p-4 sticky-top"
+style="top:80px;">
+
+<h5>Price Details</h5>
+
+<hr>
+
+<div class="d-flex justify-content-between">
+<span>Subtotal</span>
+<span>₹{{ total }}</span>
+</div>
+
+<div class="d-flex justify-content-between">
+<span>Delivery</span>
+<span class="text-success">Free</span>
+</div>
+
+<hr>
+
+<div class="d-flex justify-content-between">
+<strong>Total Amount</strong>
+<strong class="text-danger">₹{{ total }}</strong>
+</div>
+
+<a href="{{ url_for('payment') }}"
+class="btn btn-danger btn-block mt-4">
+
+Proceed To Payment
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="text-center mt-5">
+
+<h4>No items to checkout 🛒</h4>
+
+<a href="/" class="btn btn-primary mt-3">
+Continue Shopping
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

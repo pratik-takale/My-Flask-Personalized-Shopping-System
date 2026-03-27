@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+
+<h2>My Wishlist ❤️</h2>
+<hr>
+
+{% if wishlist_items %}
+
+<div class="row">
+
+{% for wish, product in wishlist_items %}
+<div class="col-md-3">
+
+<div class="card mb-4">
+
+<img src="{{ url_for('static',
+filename='images/products/' +
+product.image_url.split(',')[0]) }}"
+class="card-img-top"
+style="height:250px;object-fit:cover;">
+
+<div class="card-body text-center">
+
+<h6>{{ product.name }}</h6>
+
+<a href="/product/{{ product.id }}"
+class="btn btn-dark btn-sm">
+View
+</a>
+
+</div>
+
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+
+{% else %}
+<p>No wishlist items yet.</p>
+{% endif %}
+
+</div>
+
+{% endblock %}

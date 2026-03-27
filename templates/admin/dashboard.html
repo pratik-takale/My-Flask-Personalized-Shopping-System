@@ -1,0 +1,38 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Admin Dashboard</h2>
+
+<div class="row g-4">
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Total Products</h6>
+        <h2>{{ total_products }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Total Orders</h6>
+        <h2>{{ total_orders }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Total Users</h6>
+        <h2>{{ total_users }}</h2>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

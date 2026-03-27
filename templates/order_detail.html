@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Order Details</h2>
+
+<div class="card shadow-sm p-4 mb-4">
+
+    <h5>Invoice: {{ order.invoice_number }}</h5>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+    <p><strong>Payment:</strong> {{ order.payment_method }}</p>
+    <p><strong>Tracking ID:</strong> {{ order.tracking_id or "Not Assigned" }}</p>
+    <p><strong>Total:</strong> ₹{{ order.total_amount }}</p>
+
+</div>
+
+<h4>Products</h4>
+
+<table class="table table-bordered bg-white shadow-sm">
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Subtotal</th>
+    </tr>
+
+    {% for item, product in order_items %}
+    <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>₹{{ item.price }}</td>
+        <td>₹{{ item.quantity * item.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/user_order" class="btn btn-secondary">Back to Orders</a>
+
+{% endblock %}

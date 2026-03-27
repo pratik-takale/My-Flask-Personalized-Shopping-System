@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>{{ action }} Product</h3>
+
+<form method="POST">
+
+  <!-- PRODUCT NAME -->
+  <div class="form-group">
+    <label>Product Name</label>
+    <input type="text" name="name" class="form-control"
+           value="{{ product.name if product else '' }}" required>
+  </div>
+
+  <!-- PRICE -->
+  <div class="form-group">
+    <label>Price</label>
+    <input type="number" name="price" class="form-control"
+           value="{{ product.price if product else '' }}" required>
+  </div>
+
+  <!-- CATEGORY -->
+  <div class="form-group">
+    <label>Category</label>
+    <select name="category" class="form-control" required>
+      <option value="Men" {{ 'selected' if product and product.category=='Men' else '' }}>Men</option>
+      <option value="Women" {{ 'selected' if product and product.category=='Women' else '' }}>Women</option>
+      <option value="Footwear" {{ 'selected' if product and product.category=='Footwear' else '' }}>Footwear</option>
+      <option value="Accessories" {{ 'selected' if product and product.category=='Accessories' else '' }}>Accessories</option>
+    </select>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="form-group">
+    <label>Description</label>
+    <textarea name="description" class="form-control" rows="3">{{ product.description if product else '' }}</textarea>
+  </div>
+
+  <!-- BRAND -->
+  <div class="form-group">
+    <label>Brand</label>
+    <input type="text" name="brand" class="form-control"
+           value="{{ product.brand if product else '' }}">
+  </div>
+
+  <!-- TAGS -->
+  <div class="form-group">
+    <label>Tags</label>
+    <input type="text" name="tags" class="form-control"
+           value="{{ product.tags if product else '' }}"
+           placeholder="casual, cotton, slim-fit">
+  </div>
+
+  <!-- IMAGE URL -->
+  <div class="form-group">
+    <label>Image URL</label>
+    <input type="text" name="image_url" class="form-control"
+           value="{{ product.image_url if product else '' }}">
+  </div>
+
+  <!-- SIZES -->
+  <div class="form-group">
+    <label>Available Sizes</label>
+    <input type="text" name="sizes" class="form-control"
+           value="{{ product.sizes if product and product.sizes else '' }}"
+           placeholder="S,M,L,XL">
+  </div>
+
+  <!-- SIZE PREVIEW (EDIT MODE ONLY) -->
+  {% if product and product.sizes %}
+    <h6>Available Sizes</h6>
+    <div class="size-row">
+      {% for size in product.sizes.split(',') %}
+        <span class="size-box">{{ size }}</span>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <br>
+  <button class="btn btn-success">{{ action }} Product</button>
+
+</form>
+
+{% endblock %}

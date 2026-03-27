@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Track Order: {{ order.invoice_number }}</h3>
+
+<div class="timeline">
+
+    <div class="step {% if order.status in ['Pending','Shipped','Delivered'] %}active{% endif %}">
+        Order Placed
+    </div>
+
+    <div class="step {% if order.status in ['Shipped','Delivered'] %}active{% endif %}">
+        Shipped
+    </div>
+
+    <div class="step {% if order.status == 'Delivered' %}active{% endif %}">
+        Delivered
+    </div>
+
+</div>
+
+<p><strong>Tracking ID:</strong> {{ order.tracking_id }}</p>
+
+{% endblock %}

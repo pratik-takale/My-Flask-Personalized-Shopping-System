@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+
+    <!-- LEFT FILTER PANEL -->
+    <div class="col-md-3 filter-sidebar">
+
+      <h5 class="filter-title">FILTERS</h5>
+
+      <form method="GET" action="{{ url_for('products') }}">
+
+        <div class="filter-block">
+          <h6>CATEGORIES</h6>
+
+          {% for category in categories %}
+          <label class="filter-item">
+            <input type="radio"
+                   name="category"
+                   value="{{ category }}"
+                   {% if selected_category == category %}checked{% endif %}>
+            <span>{{ category }}</span>
+          </label>
+          {% endfor %}
+        </div>
+
+        <hr>
+
+        <div class="filter-block">
+          <h6>BRAND</h6>
+
+          {% for brand in products|map(attribute='brand')|unique %}
+            {% if brand %}
+            <label class="filter-item">
+              <input type="checkbox"
+                     name="brand"
+                     value="{{ brand }}"
+                     {% if brand in selected_brands %}checked{% endif %}>
+              <span>{{ brand }}</span>
+            </label>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-danger btn-block mt-3">
+          APPLY FILTER
+        </button>
+
+      </form>
+
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="col-md-9">
+      <div class="row">
+
+        {% if products|length == 0 %}
+          <div class="col-12">
+            <h4>No products found.</h4>
+          </div>
+        {% endif %}
+
+        {% for p in products %}
+
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="product-card">
+
+            <div class="wishlist-icon">♡</div>
+
+            <a href="{{ url_for('product_details', id=p.id) }}">
+              <div class="img-wrapper"
+     onmousemove="handleSlide(event, this)"
+     onmouseleave="this.querySelector('.img-slider').style.transform='translateX(0%)'">
+
+  <div class="img-slider">
+    {% set images = p.image_url.split(',') %}
+    {% for img in images %}
+      <img src="{{ url_for('static', filename='images/products/' + img.strip()) }}"
+           class="slider-img">
+    {% endfor %}
+  </div>
+
+  {% if p.rating %}
+  <div class="rating-badge">
+    {{ "%.1f"|format(p.rating) }} ★ | {{ p.review_count }}
+  </div>
+  {% endif %}
+
+</div>
+</a>
+
+              
+            <div class="product-info p-3">
+              <h6 class="brand">{{ p.brand }}</h6>
+              <p class="product-name">{{ p.name }}</p>
+
+              <div class="price-section">
+                <span class="current-price">₹{{ p.price }}</span>
+                <span class="old-price">₹{{ p.price + 200 }}</span>
+                <span class="discount">
+                  ({{ ((200 / (p.price + 200)) * 100)|int }}% OFF)
+                </span>
+              </div>
+            </div>
+
+            <a href="{{ url_for('add_to_cart', pid=p.id) }}"
+               class="btn-add">
+               ADD TO BAG
+            </a>
+
+          </div>
+        </div>
+
+        {% endfor %}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function handleSlide(e, element) {
+    const slider = element.querySelector('.img-slider');
+    const rect = element.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = x / rect.width;
+    slider.style.transform = `translateX(-${percent * 50}%)`;
+}
+</script>
+
+{% endblock %}

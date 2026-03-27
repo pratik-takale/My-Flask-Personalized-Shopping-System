@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MyShop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="topbar">
+
+  <!-- LEFT -->
+<div class="nav-left">
+    <a href="/">
+        <img src="{{ url_for('static', filename='images/logo.png') }}"
+             class="site-logo"
+             alt="Product Recommendation Logo">
+    </a>
+</div>
+  <!-- MENU -->
+  <div class="nav-menu">
+    <a href="/">HOME</a>
+
+    {% for category in categories | default([]) %}
+      <a href="{{ url_for('filter_by_category', category=category) }}">
+        {{ category.upper() }}
+      </a>
+    {% endfor %}
+  </div>
+
+  <!-- CENTER SEARCH -->
+  <div class="nav-center">
+    <form class="search-form" action="/search" method="get">
+      <input type="text"
+             name="q"
+             placeholder="Search for products, brands and more"
+             value="{{ request.args.get('q','') }}">
+    </form>
+  </div>
+
+  <!-- RIGHT SECTION -->
+  <div class="nav-right">
+
+    {% if session.get("user_id") %}
+
+      <!-- PROFILE DROPDOWN --> 
+      <!-- PROFILE DROPDOWN -->
+<div class="nav-item dropdown profile-box">
+
+    <i class="fa-regular fa-user"></i>
+    <span>Profile</span>
+
+    <div class="dropdown-menu profile-dropdown">
+
+        <p class="dropdown-user">
+            Hello,
+            <strong>{{ session.get('user_name','User') }}</strong>
+        </p>
+
+        <hr>
+
+        <a href="{{ url_for('my_account') }}">
+            <i class="fa-regular fa-user"></i>
+            My Account
+        </a>
+
+        <a href="{{ url_for('user_order') }}">
+            <i class="fa-solid fa-box"></i>
+            My Orders
+        </a>
+
+        <a href="/wishlist">
+            <i class="fa-regular fa-heart"></i>
+            Wishlist
+        </a>
+
+        <hr>
+
+        <a href="/logout" class="logout-link">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+       <!-- WISHLIST  -->
+      <a href="/wishlist" class="nav-item">
+        <i class="fa-regular fa-heart"></i>
+        <span>Wishlist</span>
+      </a>
+      
+      <!-- BAG -->
+      <a href="/cart" class="nav-item">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Bag</span>
+      </a>
+
+    {% else %}
+
+      <a href="/login">Login</a>
+      <a href="/signup">Signup</a>
+
+    {% endif %}
+
+  </div>
+
+</header>
+
+<!-- ================= MAIN ================= -->
+<main class="page">
+
+    <!-- FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+        <div class="alert alert-{{ category }} mt-2">
+          {{ msg }}
+        </div>
+      {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+</main>
+
+<!-- ================= JS ================= -->
+
+<script>
+function handleSlide(event, wrapper) {
+    const slider = wrapper.querySelector('.img-slider');
+    const images = slider.querySelectorAll('.slider-img');
+    const totalImages = images.length;
+
+    const rect = wrapper.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+
+    const sectionWidth = rect.width / totalImages;
+    let index = Math.floor(x / sectionWidth);
+
+    if (index >= totalImages) {
+        index = totalImages - 1;
+    }
+
+    slider.style.transform = `translateX(-${index * 100}%)`;
+}
+</script>
+
+<script>
+function changeMainImage(element) {
+    document.getElementById("mainProductImage").src = element.src;
+}
+</script>
+
+</body>
+</html>

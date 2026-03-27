@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Recommendation System</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+        }
+        .container {
+            margin-top: 40px;
+        }
+        .card img {
+            height: 220px;
+            object-fit: contain;
+            padding: 10px;
+        }
+        .title {
+            font-size: 34px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-light bg-white">
+    <span class="navbar-brand mb-0 h1 mx-auto">🛒 Product Recommendation System</span>
+</nav>
+
+<div class="container">
+
+    <div class="search-box">
+        <form action="/recommendations" method="POST">
+            <div class="form-group">
+                <label><b>Search Product Name</b></label>
+                <input type="text" name="prod" class="form-control" placeholder="Enter product name">
+            </div>
+
+            <div class="form-group">
+                <label><b>No. of Recommendations</b></label>
+                <input type="number" name="nbr" class="form-control" value="5" min="1" max="20">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Get Recommendations</button>
+        </form>
+    </div>
+
+    {% if message %}
+        <div class="alert alert-warning mt-4">{{ message }}</div>
+    {% endif %}
+
+    {% if searched %}
+        <h3 class="mt-5">🔍 You searched: <b>{{ searched }}</b></h3>
+    {% endif %}
+
+    {% if content_based_rec %}
+        <div class="row mt-4">
+            {% for item in content_based_rec %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="{{ item.ImageURL }}" class="card-img-top" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.Name }}</h5>
+                            <p class="card-text">
+                                <b>Brand:</b> {{ item.Brand }} <br>
+                                <b>Rating:</b> {{ item.Rating }} ⭐ <br>
+                                <b>Reviews:</b> {{ item.ReviewCount }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

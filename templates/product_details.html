@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="product-page-container">
+
+    <!-- ================= LEFT IMAGE GALLERY ================= -->
+  <div class="product-gallery-myntra">
+
+    {% set images = product.image_url.split(',') %}
+
+    <!-- LEFT THUMBNAILS -->
+    <div class="thumbnail-column">
+        {% for img in images %}
+            <img src="{{ url_for('static', filename='images/products/' + img.strip()) }}"
+                 class="thumb-img"
+                 onclick="changeMainImage(this)">
+        {% endfor %}
+    </div>
+
+    <!-- RIGHT MAIN IMAGE -->
+    <div class="main-image-container">
+        <img id="mainProductImage"
+             src="{{ url_for('static', filename='images/products/' + images[0].strip()) }}"
+             class="main-product-img">
+    </div>
+
+</div>
+
+
+    <!-- ================= RIGHT PRODUCT INFO ================= -->
+    <div class="product-details">
+
+        <h2 class="product-brand">{{ product.brand }}</h2>
+        <h4 class="product-title">{{ product.name }}</h4>
+
+        <!-- Rating -->
+        {% if product.rating %}
+        <div class="rating-box">
+            <span class="rating-number">{{ "%.1f"|format(product.rating) }} ★</span>
+            <span class="review-count">| {{ product.review_count }} Ratings</span>
+        </div>
+        {% endif %}
+
+        <hr>
+
+        <!-- Price -->
+        <div class="price-box">
+            <span class="main-price">₹{{ product.price }}</span>
+            <span class="strike-price">₹{{ product.price + 200 }}</span>
+            <span class="discount-percent">
+                ({{ ((200 / (product.price + 200)) * 100)|int }}% OFF)
+            </span>
+        </div>
+
+        <hr>
+
+        <!-- Size Selection -->
+        <h6 class="section-label">SELECT SIZE</h6>
+        <div class="size-options">
+            <div class="size-btn">S</div>
+            <div class="size-btn">M</div>
+            <div class="size-btn">L</div>
+            <div class="size-btn">XL</div>
+            <div class="size-btn">XXL</div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="action-buttons">
+            <a href="{{ url_for('add_to_cart', pid=product.id) }}" class="btn-add-bag">
+                ADD TO BAG
+            </a>
+
+           <a href="{{ url_for('add_to_wishlist', pid=product.id) }}"
+          class="btn btn-outline-dark">
+            WISHLIST
+          </a>
+        </div>
+
+        <hr>
+
+        <!-- Delivery Section -->
+        <h6 class="section-label">DELIVERY OPTIONS</h6>
+
+        <div class="delivery-box">
+            <input type="text" placeholder="Enter pincode">
+            <button>Check</button>
+        </div>
+
+        <p class="delivery-info">
+            Please enter PIN code to check delivery time & availability
+        </p>
+
+        <hr>
+
+        <!-- Description -->
+        <h6 class="section-label">PRODUCT DETAILS</h6>
+        <p class="product-description">
+            {{ product.description }}
+        </p>
+
+    </div>
+
+</div> <!-- END product-page-container -->
+
+
+<!-- ================= RATING SECTION ================= -->
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-6">
+
+
+      <div class="compact-rating-box">
+
+        <h6 class="mb-3">RATINGS</h6>
+
+        <div class="rating-flex">
+
+          <!-- LEFT -->
+          <div class="rating-left-small">
+            <h2 class="mb-1">{{ avg_rating }}</h2>
+
+            <div class="small-stars">
+              {% for i in range(1,6) %}
+                {% if i <= avg_rating %}
+                  ★
+                {% else %}
+                  ☆
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            <p class="mb-0">{{ total_reviews }} Verified Buyers</p>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="rating-right-small">
+            {% for star in range(5,0,-1) %}
+            <div class="rating-row-small">
+              <span>{{ star }}★</span>
+
+              <div class="progress-small">
+                <div class="fill-small"
+                     style="width:
+                     {{ (rating_counts[star] / total_reviews * 100)
+                     if total_reviews > 0 else 0 }}%">
+                </div>
+              </div>
+
+              <span>{{ rating_counts[star] }}</span>
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Write Review -->
+<div class="review-form">
+
+    <h5>Write a Review</h5>
+
+    <form method="POST" action="{{ url_for('add_review', product_id=product.id) }}">
+
+        <div class="mb-3">
+            <label class="form-label">Rating</label>
+            <select name="rating" required>
+                <option value="">Select</option>
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Good</option>
+                <option value="3">3 - Average</option>
+                <option value="2">2 - Poor</option>
+                <option value="1">1 - Bad</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <textarea name="comment" placeholder="Write your review..." required></textarea>
+        </div>
+
+        <button type="submit">Submit Review</button>
+
+    </form>
+
+</div>
+</div>  
+</div>  
+</div>  
+
+<!-- ================= SIMILAR PRODUCTS ================= -->
+<!-- ================= SIMILAR PRODUCTS ================= -->
+<div class="container-fluid mt-5 similar-wrapper">
+
+<h4 class="mb-4">SIMILAR PRODUCTS</h4>
+
+<div class="similar-grid">
+
+{% for sp in similar_products %}
+
+<div class="similar-card">
+<a href="{{ url_for('product_details', id=sp.id) }}">
+
+<div class="similar-img-wrapper">
+
+{% set images = sp.image_url.split(',') %}
+
+<img src="{{ url_for('static',
+filename='images/products/' + images[0].strip()) }}"
+class="similar-img">
+
+</div>
+
+<div class="similar-info">
+<h6 class="similar-brand mb-0">{{ sp.brand }}</h6>
+<p class="similar-name mb-0">{{ sp.name }}</p>
+
+<div class="similar-price">
+<span class="price-now">Rs. {{ sp.price }}</span>
+<span class="price-old">Rs. {{ sp.price + 200 }}</span>
+<span class="price-discount">
+({{ ((200 / (sp.price + 200)) * 100)|int }}% OFF)
+</span>
+</div>
+
+</div>
+
+</a>
+</div>
+
+{% endfor %}
+
+</div>  <!-- ✅ CLOSE similar-grid -->
+</div>  <!-- ✅ CLOSE container -->
+
+
+<!-- ================= CUSTOMERS ALSO BOUGHT ================= -->
+{% if also_bought_products %}
+
+<section class="container mt-5">
+
+<h4 class="mb-4">🛒 Customers Also Bought</h4>
+
+<div class="row g-4">
+
+{% for product in also_bought_products %}
+
+<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+
+<div class="card product-card h-100">
+
+<img
+src="{{ url_for('static',
+filename='images/products/' +
+product.image_url.split(',')[0]) }}"
+class="card-img-top product-img"
+>
+
+<div class="card-body text-center">
+
+<p class="product-title">
+{{ product.name[:40] }}...
+</p>
+
+<a href="{{ url_for('product_details', id=product.id) }}"
+class="btn btn-dark btn-sm">
+View
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+</section>
+
+{% endif %}
+
+
+
+
+  </div>
+
+</div>
+
+{% endblock %}

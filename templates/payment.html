@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-main mt-5">
+
+<h3 class="mb-4">💳 Payment</h3>
+
+<div class="row">
+
+<div class="col-md-8">
+
+<div class="card shadow-sm p-4">
+
+<h5>Order Summary</h5>
+<hr>
+
+{% for item, product in cart_items %}
+<div class="d-flex justify-content-between mb-2">
+<span>{{ product.name }} (x{{ item.quantity }})</span>
+<strong>₹{{ product.price * item.quantity }}</strong>
+</div>
+{% endfor %}
+
+<hr>
+
+<div class="d-flex justify-content-between">
+<h5>Total</h5>
+<h5 class="text-danger">₹{{ total }}</h5>
+</div>
+
+<!-- CSRF TOKEN -->
+<input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
+
+<button id="payBtn" class="btn btn-danger btn-block mt-4">
+Pay Now
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Razorpay Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+const payBtn = document.getElementById("payBtn");
+const csrfToken = document.getElementById("csrf_token").value;
+
+payBtn.onclick = function(){
+
+// STEP 1: Create Order
+fetch("/create_order", {
+
+method: "POST",
+
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken": csrfToken
+}
+
+})
+.then(response => response.json())
+.then(order => {
+
+if(!order.order_id){
+alert("Order creation failed");
+return;
+}
+
+// STEP 2: Razorpay Checkout
+
+var options = {
+
+key: "rzp_test_S0zZ7YGBBKaH3p",
+
+amount: order.amount,
+
+currency: "INR",
+
+name: "MyShop",
+
+description: "Order Payment",
+
+order_id: order.order_id,
+
+handler: function (response) {
+
+// STEP 3: Verify Payment
+
+fetch("/verify_payment",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken": csrfToken
+},
+
+body: JSON.stringify(response)
+
+})
+.then(res => res.json())
+.then(data => {
+
+if(data.status === "success"){
+
+window.location.href="/payment_success";
+
+}else{
+
+alert("Payment verification failed");
+
+}
+
+});
+
+},
+
+theme:{
+color:"#ff3f6c"
+}
+
+};
+
+var rzp1 = new Razorpay(options);
+
+rzp1.open();
+
+});
+
+};
+
+});
+
+</script>
+
+{% endblock %}
