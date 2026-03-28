@@ -27,3 +27,27 @@
 - Payment: Razorpay
 - Email: Flask-Mail
 - ML: TF-IDF + Cosine Similarity
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home](static/screenshots/home.png)
+
+### 🛍️ Product Page
+![Product](static/screenshots/product.png)
+
+### 🛒 Cart Page
+![Cart](static/screenshots/cart.png)
+
+### 💳 Checkout Page
+![Checkout](static/screenshots/checkout.png)
+
+### 💳 user_ordr Page
+![Checkout](static/screenshots/order.png)
+
+## ⚙️ Installation
+
+```bash
+git clone https://github.com/pratik-takale/My-Personalized-shopping-system.git
+cd My-Personalized-shopping-system
+pip install -r requirements.txt
+python app.py
