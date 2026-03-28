@@ -7,7 +7,7 @@
 
 ## 📌 Description
 
-हा एक Flask आधारित E-commerce web application आहे ज्यामध्ये user ला products पाहता येतात, cart मध्ये add करता येतात आणि AI आधारित recommendation system वापरून similar products दाखवले जातात.
+This is a Flask-based e-commerce web application where users can browse products, add items to their cart, and complete purchases. The system also includes an AI-powered recommendation engine that suggests similar products based on user preferences and product data.
 ## 🚀 Features
 
 - 🛍️ Product Listing & Details
