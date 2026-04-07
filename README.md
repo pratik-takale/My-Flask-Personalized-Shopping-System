@@ -5,10 +5,10 @@
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 
-## 📌 Description
+##  Description
 
 This is a Flask-based e-commerce web application where users can browse products, add items to their cart, and complete purchases. The system also includes an AI-powered recommendation engine that suggests similar products based on user preferences and product data.
-## 🚀 Features
+##  Features
 
 - 🛍️ Product Listing & Details
 - 🛒 Add to Cart & Checkout
@@ -18,7 +18,7 @@ This is a Flask-based e-commerce web application where users can browse products
 - ❤️ Wishlist
 - ⭐ Ratings & Reviews
 - 👨‍💼 Admin Panel
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - Backend: Flask (Python)
 - Database: MySQL / SQLite
@@ -29,22 +29,22 @@ This is a Flask-based e-commerce web application where users can browse products
 - ML: TF-IDF + Cosine Similarity
 ## 📸 Screenshots
 
-### 🏠 Home Page
+###  Home Page
 ![Home](static/screenshots/home.png)
 
-### 🛍️ Product Page
+###  Product Page
 ![Product](static/screenshots/product.png)
 
-### 🛒 Cart Page
+###  Cart Page
 ![Cart](static/screenshots/cart.png)
 
-### 💳 Checkout Page
+###  Checkout Page
 ![Checkout](static/screenshots/checkout.png)
 
-### 💳 user_ordr Page
+###  user_ordr Page
 ![Checkout](static/screenshots/order.png)
 
-## ⚙️ Installation
+##  Installation
 
 ```bash
 git clone https://github.com/pratik-takale/My-Personalized-shopping-system.git
